@@ -3,6 +3,8 @@
   remote_user: root
   become: true
   become_method: sudo
+  vars:
+    compose_directory: "/data/hosting.minetest.ch"
   tasks:
     - name: create project dir
       file:
