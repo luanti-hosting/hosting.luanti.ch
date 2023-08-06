@@ -1,0 +1,70 @@
+version: "2"
+
+services:
+ redis:
+  image: redis:7.0.12-alpine
+  restart: always
+  labels:
+   - "promtail=true"
+
+ mt-hosting-worker:
+  image: registry.rudin.io/minetest-hosting/mt-hosting-manager:latest
+  working_dir: /data
+  depends_on:
+   - redis
+  environment:
+   - ENABLE_WORKER=true
+  env_file:
+   - .env
+  volumes:
+   - "./data/db:/data"
+   - "./id_rsa:/id_rsa"
+  labels:
+    - "promtail=true"
+
+ mt-hosting-green:
+  image: registry.rudin.io/minetest-hosting/mt-hosting-manager:latest
+  working_dir: /data
+  depends_on:
+   - redis
+  env_file:
+   - .env
+  volumes:
+   - "./data/db:/data"
+  labels:
+    - "promtail=true"
+
+ mt-hosting-blue:
+  image: registry.rudin.io/minetest-hosting/mt-hosting-manager:latest
+  working_dir: /data
+  depends_on:
+   - redis
+  env_file:
+   - .env
+  volumes:
+   - "./data/db:/data"
+  labels:
+    - "promtail=true"
+
+ mt-hosting-haproxy:
+  image: haproxy:2.8.1-alpine
+  volumes:
+   - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+  networks:
+   - default
+   - terminator
+  depends_on:
+   - mt-hosting-green
+   - mt-hosting-blue
+  labels:
+    - "promtail=true"
+    - "traefik.enable=true"
+    - "traefik.docker.network=terminator"
+    - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
+    - "traefik.http.services.mthosting.loadbalancer.server.port=80"
+    - "traefik.http.routers.mthosting.entrypoints=websecure"
+    - "traefik.http.routers.mthosting.tls.certresolver=default"
+
+networks:
+ terminator:
+  external: true
