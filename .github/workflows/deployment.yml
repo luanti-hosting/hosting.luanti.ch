@@ -26,3 +26,14 @@ jobs:
     - name: Run ansible
       run: |
         ansible-playbook -i hosts --vault-password-file ~/.vault_pass.txt --private-key ~/.ssh/id_rsa deploy.yml
+
+    - name: ntfy success notification
+      uses: wei/curl@v1
+      with:
+        args: -H "Title:hosting.minetest.ch" -H "Tags:white_check_mark" -d 'Deployment succeeded for ${{github.sha}}' ${{ secrets.NTFY_URL }}
+
+    - name: ntfy failure notification
+      if: failure()
+      uses: wei/curl@v1
+      with:
+        args: -H "Title:hosting.minetest.ch" -H "Tags:warning" -d 'Deployment failed for ${{github.sha}}' ${{ secrets.NTFY_URL }}
