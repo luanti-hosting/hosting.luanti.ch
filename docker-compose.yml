@@ -2,7 +2,7 @@ version: "2"
 
 services:
  redis:
-  image: redis:7.0.12-alpine
+  image: redis:7.2.0-alpine
   restart: always
   labels:
    - "promtail=true"
