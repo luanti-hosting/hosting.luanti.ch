@@ -22,48 +22,29 @@ services:
   labels:
     - "promtail=true"
 
- mt-hosting-green:
+ mt-hosting-green: &hosting
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
-  depends_on:
-   - redis
-  env_file:
-   - .env
-  volumes:
-   - "./data/db:/data"
-  labels:
-    - "promtail=true"
-
- mt-hosting-blue:
-  image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
-  working_dir: /data
-  depends_on:
-   - redis
-  env_file:
-   - .env
-  volumes:
-   - "./data/db:/data"
-  labels:
-    - "promtail=true"
-
- mt-hosting-haproxy:
-  image: haproxy:2.8.2-alpine
-  volumes:
-   - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
   networks:
    - default
    - terminator
   depends_on:
-   - mt-hosting-green
-   - mt-hosting-blue
+   - redis
+  env_file:
+   - .env
+  volumes:
+   - "./data/db:/data"
   labels:
     - "promtail=true"
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
     - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
-    - "traefik.http.services.mthosting.loadbalancer.server.port=80"
+    - "traefik.http.services.mthosting.loadbalancer.server.port=8080"
     - "traefik.http.routers.mthosting.entrypoints=websecure"
     - "traefik.http.routers.mthosting.tls.certresolver=default"
+
+ mt-hosting-blue:
+  <<: *hosting
 
 networks:
  terminator:
