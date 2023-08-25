@@ -17,7 +17,6 @@
         dest: "{{compose_directory}}/{{item}}"
       with_items:
        - "docker-compose.yml"
-       - "haproxy.cfg"
        - ".env"
 
     - name: Copy env file

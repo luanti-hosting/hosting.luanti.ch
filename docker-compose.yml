@@ -1,17 +1,9 @@
 version: "2"
 
 services:
- redis:
-  image: redis:7.2.0-alpine
-  restart: always
-  labels:
-   - "promtail=true"
-
  mt-hosting-worker:
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
-  depends_on:
-   - redis
   environment:
    - ENABLE_WORKER=true
   env_file:
@@ -28,8 +20,6 @@ services:
   networks:
    - default
    - terminator
-  depends_on:
-   - redis
   env_file:
    - .env
   volumes:
