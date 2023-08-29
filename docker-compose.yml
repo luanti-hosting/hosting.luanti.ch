@@ -30,8 +30,13 @@ services:
     - "traefik.docker.network=terminator"
     - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
     - "traefik.http.services.mthosting.loadbalancer.server.port=8080"
+    - "traefik.http.services.mthosting.loadbalancer.healthCheck.path=/"
+    - "traefik.http.services.mthosting.loadbalancer.healthCheck.interval=10s"
+    - "traefik.http.services.mthosting.loadbalancer.healthCheck.timeout=1s"
     - "traefik.http.routers.mthosting.entrypoints=websecure"
     - "traefik.http.routers.mthosting.tls.certresolver=default"
+    - "traefik.http.middlewares.mthosting-retry.retry.attempts=5"
+    - "traefik.http.middlewares.mthosting-retry.retry.initialinterval=200ms"
 
  mt-hosting-blue:
   <<: *hosting
