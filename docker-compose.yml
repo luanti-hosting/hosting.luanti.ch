@@ -4,6 +4,7 @@ services:
  mt-hosting-worker:
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
+  stop_grace_period: 5m
   environment:
    - ENABLE_WORKER=true
   env_file:
