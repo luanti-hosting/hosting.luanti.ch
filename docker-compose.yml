@@ -9,7 +9,7 @@ services:
   env_file:
    - .env
   volumes:
-   - "./data/db:/data"
+   - "./data:/data"
    - "./id_rsa:/id_rsa"
   labels:
     - "promtail=true"
@@ -23,7 +23,7 @@ services:
   env_file:
    - .env
   volumes:
-   - "./data/db:/data"
+   - "./data:/data"
   labels:
     - "promtail=true"
     - "traefik.enable=true"
