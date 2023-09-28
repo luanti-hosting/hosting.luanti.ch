@@ -4,12 +4,13 @@ services:
  mt-hosting-worker:
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
+  stop_grace_period: 5m
   environment:
    - ENABLE_WORKER=true
   env_file:
    - .env
   volumes:
-   - "./data/db:/data"
+   - "./data:/data"
    - "./id_rsa:/id_rsa"
   labels:
     - "promtail=true"
@@ -23,7 +24,7 @@ services:
   env_file:
    - .env
   volumes:
-   - "./data/db:/data"
+   - "./data:/data"
   labels:
     - "promtail=true"
     - "traefik.enable=true"
