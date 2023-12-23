@@ -17,6 +17,7 @@
         dest: "{{compose_directory}}/{{item}}"
       with_items:
        - "docker-compose.yml"
+       - "haproxy.cfg"
        - ".env"
 
     - name: Copy env file
@@ -44,7 +45,7 @@
 
     - name: Wait for container start
       pause:
-        seconds: 2
+        seconds: 10
 
     - name: Update blue deployment
       docker_compose:

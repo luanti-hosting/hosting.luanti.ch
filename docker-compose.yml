@@ -37,18 +37,33 @@ services:
    - "./data:/data"
   labels:
     - "promtail=true"
-    - "traefik.enable=true"
-    - "traefik.docker.network=terminator"
-    - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
-    - "traefik.http.routers.mthosting.entrypoints=websecure"
-    - "traefik.http.routers.mthosting.tls.certresolver=default"
-    - "traefik.http.services.mthosting.loadbalancer.server.port=8080"
-    - "traefik.http.services.mthosting.loadbalancer.healthCheck.path=/api/healthcheck"
-    - "traefik.http.services.mthosting.loadbalancer.healthCheck.interval=1s"
-    - "traefik.http.services.mthosting.loadbalancer.healthCheck.timeout=500ms"
 
  mt-hosting-blue:
   <<: *hosting
+
+ haproxy:
+  image: haproxy:2.9.1
+  networks:
+   - terminator
+   - default
+  restart: always
+  depends_on:
+   - mt-hosting-blue
+   - mt-hosting-green
+  labels:
+    - "promtail=true"
+    - "traefik.enable=true"
+    - "traefik.docker.network=terminator"
+    - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
+    - "traefik.http.services.mthosting.loadbalancer.server.port=80"
+    - "traefik.http.routers.mthosting.entrypoints=websecure"
+    - "traefik.http.routers.mthosting.tls.certresolver=default"
+  volumes:
+   - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+  logging:
+   options:
+    max-size: 50m
+
 
 networks:
  terminator:
