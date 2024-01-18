@@ -42,7 +42,7 @@ services:
   <<: *hosting
 
  haproxy:
-  image: haproxy:2.9.1
+  image: haproxy:2.9.2
   networks:
    - terminator
    - default
