@@ -7,12 +7,33 @@ services:
   labels:
    - "promtail=true"
 
+ postgres:
+  image: postgres:16.1
+  restart: always
+  shm_size: '2gb'
+  environment:
+   POSTGRES_PASSWORD: enter
+  labels:
+   - "promtail=true"
+  volumes:
+   - "./data/postgres:/var/lib/postgresql/data"
+  command:
+   - "postgres"
+   - "-c"
+   - "shared_buffers=4GB"
+   - "-c"
+   - "synchronous_commit=off"
+  logging:
+   options:
+    max-size: 50m
+
  mt-hosting-worker:
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
   stop_grace_period: 5m
   depends_on:
    - redis
+   - postgres
   environment:
    - ENABLE_WORKER=true
   env_file:
@@ -28,6 +49,7 @@ services:
   working_dir: /data
   depends_on:
    - redis
+   - postgres
   networks:
    - default
    - terminator
