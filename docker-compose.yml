@@ -37,6 +37,7 @@ services:
   environment:
    - ENABLE_WORKER=true
   env_file:
+   - public.env
    - .env
   volumes:
    - "./data:/data"
@@ -54,6 +55,7 @@ services:
    - default
    - terminator
   env_file:
+   - public.env
    - .env
   volumes:
    - "./data:/data"
