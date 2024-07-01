@@ -26,27 +26,9 @@
         content: "{{ SSH_KEY }}"
         dest: "{{compose_directory}}/id_rsa"
 
-    - name: Update worker deployment
-      docker_compose:
-        project_src: "{{ compose_directory }}"
-        pull: yes
-        services:
-         - mt-hosting-worker
-
     - name: Wait for container start
       pause:
         seconds: 2
-
-    - name: Update green deployment
-      docker_compose:
-        project_src: "{{ compose_directory }}"
-        pull: yes
-        services:
-         - mt-hosting-green
-
-    - name: Wait for container start
-      pause:
-        seconds: 10
 
     - name: Update blue deployment
       docker_compose:
@@ -54,6 +36,17 @@
         pull: yes
         services:
          - mt-hosting-blue
+
+    - name: Wait for container start
+      pause:
+        seconds: 10
+
+    - name: Update green deployment
+      docker_compose:
+        project_src: "{{ compose_directory }}"
+        pull: yes
+        services:
+         - mt-hosting-green
 
     - name: Start auxilliary services
       docker_compose:
