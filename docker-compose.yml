@@ -50,6 +50,8 @@ services:
 
  mt-hosting-green:
   <<: *hosting
+  environment:
+   - ENABLE_WORKER=false
 
  haproxy:
   image: haproxy:3.0.2
