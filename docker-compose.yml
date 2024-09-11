@@ -1,20 +1,12 @@
 version: "2"
 
 services:
- redis:
-  image: redis:7.4.0-alpine
-  restart: always
-  labels:
-   - "promtail=true"
-
  postgres:
   image: postgres:16.4
   restart: always
   shm_size: '2gb'
   environment:
    POSTGRES_PASSWORD: enter
-  labels:
-   - "promtail=true"
   volumes:
    - "./data/postgres:/var/lib/postgresql/data"
   command:
@@ -34,19 +26,16 @@ services:
   environment:
    - ENABLE_WORKER=true
   depends_on:
-   - redis
    - postgres
   networks:
    - default
    - terminator
   env_file:
-   - public.env
+   - private.env
    - .env
   volumes:
    - "./data:/data"
    - "./id_rsa:/id_rsa"
-  labels:
-    - "promtail=true"
 
  mt-hosting-passive:
   <<: *hosting
@@ -63,7 +52,6 @@ services:
    - mt-hosting-active
    - mt-hosting-passive
   labels:
-    - "promtail=true"
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
     - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"

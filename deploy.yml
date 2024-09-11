@@ -19,7 +19,6 @@
        - "docker-compose.yml"
        - "haproxy.cfg"
        - ".env"
-       - "public.env"
 
     - name: Copy env file
       copy:
