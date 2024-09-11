@@ -20,10 +20,6 @@
        - "haproxy.cfg"
        - ".env"
 
-    - name: Wait for container start
-      pause:
-        seconds: 2
-
     - name: Update active deployment
       docker_compose:
         project_src: "{{ compose_directory }}"
