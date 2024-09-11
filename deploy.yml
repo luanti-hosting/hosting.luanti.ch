@@ -20,11 +20,6 @@
        - "haproxy.cfg"
        - ".env"
 
-    - name: Copy env file
-      copy:
-        content: "{{ SSH_KEY }}"
-        dest: "{{compose_directory}}/id_rsa"
-
     - name: Wait for container start
       pause:
         seconds: 2
