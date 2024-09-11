@@ -27,7 +27,7 @@ services:
    options:
     max-size: 50m
 
- mt-hosting-blue: &hosting
+ mt-hosting-active: &hosting
   image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
   working_dir: /data
   stop_grace_period: 5m
@@ -48,7 +48,7 @@ services:
   labels:
     - "promtail=true"
 
- mt-hosting-green:
+ mt-hosting-passive:
   <<: *hosting
   environment:
    - ENABLE_WORKER=false
@@ -60,8 +60,8 @@ services:
    - default
   restart: always
   depends_on:
-   - mt-hosting-blue
-   - mt-hosting-green
+   - mt-hosting-active
+   - mt-hosting-passive
   labels:
     - "promtail=true"
     - "traefik.enable=true"

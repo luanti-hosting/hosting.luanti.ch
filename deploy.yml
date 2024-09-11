@@ -30,23 +30,23 @@
       pause:
         seconds: 2
 
-    - name: Update blue deployment
+    - name: Update active deployment
       docker_compose:
         project_src: "{{ compose_directory }}"
         pull: yes
         services:
-         - mt-hosting-blue
+         - mt-hosting-active
 
     - name: Wait for container start
       pause:
         seconds: 10
 
-    - name: Update green deployment
+    - name: Update passive deployment
       docker_compose:
         project_src: "{{ compose_directory }}"
         pull: yes
         services:
-         - mt-hosting-green
+         - mt-hosting-passive
 
     - name: Start auxilliary services
       docker_compose:
