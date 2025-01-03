@@ -23,11 +23,10 @@
         sleep 5
         cat dump.sql | docker-compose exec -T postgres psql -U postgres
       args:
-        chdir: "{{compose_directory}}/"
+        chdir: "{{compose_directory}}"
 
-    - name: Create and start services
-      community.general.docker_compose:
-        project_src: "{{ compose_directory }}"
-        pull: true
-        build: true
-        remove_orphans: true
+    - name: start services
+      shell: |
+        docker-compose up -d --remove-orphans
+      args:
+        chdir: "{{compose_directory}}"
