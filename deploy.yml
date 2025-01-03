@@ -20,28 +20,12 @@
        - "haproxy.cfg"
        - ".env"
 
-    - name: Pull image
+    - name: Update deployment
       shell: |
         docker-compose pull
-
-    - name: Update active deployment
-      shell: |
         docker-compose up -d mt-hosting-active
-      args:
-        chdir: "{{compose_directory}}"
-
-    - name: Wait for container start
-      pause:
-        seconds: 10
-
-    - name: Update passive deployment
-      shell: |
+        sleep 10
         docker-compose up -d mt-hosting-passive
-      args:
-        chdir: "{{compose_directory}}"
-
-    - name: Start auxilliary services
-      shell: |
         docker-compose up -d
       args:
         chdir: "{{compose_directory}}"
