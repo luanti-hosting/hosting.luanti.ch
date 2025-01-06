@@ -4,7 +4,7 @@
   become: true
   become_method: sudo
   vars:
-    compose_directory: "/data/hosting.minetest.ch"
+    compose_directory: "/data/hosting.luanti.ch"
   tasks:
     - name: create project dir
       file:
@@ -18,6 +18,7 @@
       with_items:
        - "docker-compose.yml"
        - "haproxy.cfg"
+       - "redirect.conf"
        - ".env"
 
     - name: Update deployment

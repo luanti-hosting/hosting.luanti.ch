@@ -55,16 +55,31 @@ services:
   labels:
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
-    - "traefik.http.routers.mthosting.rule=Host(`hosting.minetest.ch`)"
-    - "traefik.http.services.mthosting.loadbalancer.server.port=80"
-    - "traefik.http.routers.mthosting.entrypoints=websecure"
-    - "traefik.http.routers.mthosting.tls.certresolver=default"
+    - "traefik.http.routers.luanti-hosting.rule=Host(`hosting.luanti.ch`)"
+    - "traefik.http.services.luanti-hosting.loadbalancer.server.port=80"
+    - "traefik.http.routers.luanti-hosting.entrypoints=websecure"
+    - "traefik.http.routers.luanti-hosting.tls.certresolver=default"
   volumes:
    - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
   logging:
    options:
     max-size: 50m
 
+ redirect:
+  image: nginx:1.25.2
+  networks:
+   - terminator
+   - default
+  restart: always
+  labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=terminator"
+    - "traefik.http.routers.minetest-hosting.rule=Host(`hosting.minetest.ch`)"
+    - "traefik.http.services.minetest-hosting.loadbalancer.server.port=80"
+    - "traefik.http.routers.minetest-hosting.entrypoints=websecure"
+    - "traefik.http.routers.minetest-hosting.tls.certresolver=default"
+  volumes:
+   - "./redirect.conf:/etc/nginx/conf.d/default.conf:ro"
 
 networks:
  terminator:
