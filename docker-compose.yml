@@ -20,7 +20,7 @@ services:
     max-size: 50m
 
  mt-hosting-active: &hosting
-  image: ghcr.io/minetest-hosting/mt-hosting-manager:latest
+  image: ghcr.io/luanti-hosting/mt-hosting-manager:latest
   restart: always
   working_dir: /data
   stop_grace_period: 5m
