@@ -66,7 +66,7 @@ services:
     max-size: 50m
 
  redirect:
-  image: nginx:1.27.4
+  image: nginx:1.27.5
   networks:
    - terminator
    - default
