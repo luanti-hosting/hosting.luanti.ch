@@ -23,10 +23,10 @@
 
     - name: Update deployment
       shell: |
-        docker-compose pull
-        docker-compose up -d mt-hosting-active
+        docker compose pull
+        docker compose up -d mt-hosting-active
         sleep 10
-        docker-compose up -d mt-hosting-passive
-        docker-compose up -d
+        docker compose up -d mt-hosting-passive
+        docker compose up -d
       args:
         chdir: "{{compose_directory}}"
