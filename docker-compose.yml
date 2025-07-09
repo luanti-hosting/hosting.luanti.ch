@@ -44,7 +44,7 @@ services:
    - ENABLE_WORKER=false
 
  haproxy:
-  image: haproxy:3.2.2
+  image: haproxy:3.2.3
   networks:
    - terminator
    - default
