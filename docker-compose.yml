@@ -2,7 +2,7 @@ version: "2"
 
 services:
  postgres:
-  image: postgres:17.2
+  image: postgres:17.6
   restart: always
   shm_size: '2gb'
   environment:
